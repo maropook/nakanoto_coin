@@ -10,7 +10,7 @@ class AppDatabase {
   }
 
   Future<Database> _initDB() async {
-    String path = join(await getDatabasesPath(), 'todo.db');
+    String path = join(await getDatabasesPath(), 'point.db');
 
     return await openDatabase(
       path,
@@ -21,10 +21,10 @@ class AppDatabase {
 
   Future<void> _createTable(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE todos(
+      CREATE TABLE points(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        is_done BOOLEAN
+        point INTEGER,
+        used_point INTEGER
       )
     ''');
   }

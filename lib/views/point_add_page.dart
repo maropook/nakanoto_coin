@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nakanoto_coin/viewModels/todo_view_model.dart';
+import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 
-class TodoAddPage extends ConsumerWidget {
+class PointAddPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TodoViewModelProvider todoViewModel =
-        ref.read(todoViewModelProvider.notifier);
+    final PointViewModelProvider pointViewModel =
+        ref.read(pointViewModelProvider.notifier);
 
     final _titleController = TextEditingController();
 
@@ -19,7 +19,7 @@ class TodoAddPage extends ConsumerWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              await todoViewModel.addTodo(_titleController.text);
+              await pointViewModel.addPoint(_titleController.text);
 
               Navigator.pop(context);
             },

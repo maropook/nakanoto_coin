@@ -1,11 +1,12 @@
 import 'package:nakanoto_coin/databases/app_database.dart';
-import 'package:nakanoto_coin/models/todo.dart';
+import 'package:nakanoto_coin/models/point.dart';
+import 'package:nakanoto_coin/models/point.dart';
 import 'package:sqflite/sqflite.dart';
 
-class TodoDatabase extends AppDatabase {
-  final String _tableName = 'todos';
+class PointDatabase extends AppDatabase {
+  final String _tableName = 'points';
 
-  Future<List<Todo>> getTodos() async {
+  Future<List<Point>> getPoints() async {
     final db = await database;
     final maps = await db.query(
       _tableName,
@@ -14,31 +15,31 @@ class TodoDatabase extends AppDatabase {
 
     if (maps.isEmpty) return [];
 
-    return maps.map((map) => Todo.fromJson(map)).toList();
+    return maps.map((map) => Point.fromJson(map)).toList();
   }
 
-  Future<Todo> insert(Todo todo) async {
+  Future<Point> insert(Point point) async {
     final db = await database;
 
     final id = await db.insert(
       _tableName,
-      todo.toJson(),
+      point.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    return todo.copyWith(
+    return point.copyWith(
       id: id,
     );
   }
 
-  Future update(Todo todo) async {
+  Future update(Point point) async {
     final db = await database;
 
     return await db.update(
       _tableName,
-      todo.toJson(),
+      point.toJson(),
       where: 'id = ?',
-      whereArgs: [todo.id],
+      whereArgs: [point.id],
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
