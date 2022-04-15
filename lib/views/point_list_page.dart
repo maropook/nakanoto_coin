@@ -34,7 +34,6 @@ class PointListPage extends ConsumerWidget {
           ),
           // 2つ目のFAB
           Container(
-            // 余白を設けるためContainerでラップします。
             margin: EdgeInsets.only(bottom: 16.0),
             child: FloatingActionButton(
               heroTag: "scan",
