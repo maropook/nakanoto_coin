@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nakanoto_coin/models/point.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
+import 'package:nakanoto_coin/views/happy_page.dart';
 import 'package:nakanoto_coin/views/point_add_page.dart';
 
 class PointListPage extends ConsumerWidget {
@@ -11,19 +12,47 @@ class PointListPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(),
       body: _pointList(ref),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.edit),
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () async {
-          Navigator.of(context, rootNavigator: true).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return PointAddPage();
+      floatingActionButton: Column(
+        verticalDirection: VerticalDirection.up, // childrenの先頭が下に配置されます。
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          // 1つ目のFAB
+          FloatingActionButton(
+            heroTag: "happy",
+            child: Icon(Icons.face),
+            backgroundColor: Colors.blue[200],
+            onPressed: () async {
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return HappyPage();
+                  },
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+          ),
+          // 2つ目のFAB
+          Container(
+            // 余白を設けるためContainerでラップします。
+            margin: EdgeInsets.only(bottom: 16.0),
+            child: FloatingActionButton(
+              heroTag: "scan",
+              child: const Icon(Icons.edit),
+              backgroundColor: Theme.of(context).primaryColor,
+              onPressed: () async {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return PointAddPage();
+                    },
+                    fullscreenDialog: true,
+                  ),
+                );
               },
-              fullscreenDialog: true,
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
