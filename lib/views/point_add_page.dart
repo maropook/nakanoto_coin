@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PointAddPage extends ConsumerWidget {
   @override

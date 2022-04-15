@@ -1,9 +1,8 @@
 import 'package:nakanoto_coin/databases/point_database.dart';
 import 'package:nakanoto_coin/models/point.dart';
-import 'package:nakanoto_coin/models/point.dart';
 import 'package:nakanoto_coin/repositories/point_repository.dart';
 import 'package:nakanoto_coin/states/point_state.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final pointViewModelProvider =
     StateNotifierProvider<PointViewModelProvider, PointState>(

@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:nakanoto_coin/views/my_button.dart';
 import 'package:nakanoto_coin/views/payed_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EnterPrice extends StatefulWidget {
   const EnterPrice({Key? key}) : super(key: key);
@@ -11,6 +12,14 @@ class EnterPrice extends StatefulWidget {
   @override
   _EnterPriceState createState() => _EnterPriceState();
 }
+
+final userInputProvider = StateProvider<String>((ref) {
+  return '';
+});
+
+final answerProvider = StateProvider<String>((ref) {
+  return '';
+});
 
 class _EnterPriceState extends State<EnterPrice> {
   AudioCache audioCache = AudioCache(fixedPlayer: AudioPlayer());
@@ -58,7 +67,6 @@ class _EnterPriceState extends State<EnterPrice> {
                   ),
                   Container(
                     padding: const EdgeInsets.all(5),
-                    //alignment: Alignment.centerRight,
                     child: ElevatedButton(
                       child: const Text('つかう',
                           style: TextStyle(

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nakanoto_coin/models/point.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
+import 'package:nakanoto_coin/views/enter_price.dart';
 import 'package:nakanoto_coin/views/happy_page.dart';
 import 'package:nakanoto_coin/views/point_add_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PointListPage extends ConsumerWidget {
   @override
@@ -16,16 +17,14 @@ class PointListPage extends ConsumerWidget {
         verticalDirection: VerticalDirection.up, // childrenの先頭が下に配置されます。
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          // 1つ目のFAB
           FloatingActionButton(
             heroTag: "happy",
-            child: Icon(Icons.face),
-            backgroundColor: Colors.blue[200],
+            child: const Icon(Icons.face),
             onPressed: () async {
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return HappyPage();
+                    return const HappyPage();
                   },
                   fullscreenDialog: true,
                 ),
@@ -34,7 +33,7 @@ class PointListPage extends ConsumerWidget {
           ),
           // 2つ目のFAB
           Container(
-            margin: EdgeInsets.only(bottom: 16.0),
+            margin: const EdgeInsets.only(bottom: 16.0),
             child: FloatingActionButton(
               heroTag: "scan",
               child: const Icon(Icons.edit),
@@ -44,6 +43,24 @@ class PointListPage extends ConsumerWidget {
                   MaterialPageRoute(
                     builder: (context) {
                       return PointAddPage();
+                    },
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 16.0),
+            child: FloatingActionButton(
+              heroTag: "scan",
+              child: const Icon(Icons.edit),
+              backgroundColor: Theme.of(context).primaryColor,
+              onPressed: () async {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return EnterPrice();
                     },
                     fullscreenDialog: true,
                   ),
