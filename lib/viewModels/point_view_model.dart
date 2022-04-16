@@ -1,4 +1,5 @@
 import 'package:nakanoto_coin/databases/point_database.dart';
+import 'package:nakanoto_coin/initial_state.dart';
 import 'package:nakanoto_coin/models/point.dart';
 import 'package:nakanoto_coin/repositories/point_repository.dart';
 import 'package:nakanoto_coin/states/point_state.dart';
@@ -7,21 +8,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final pointViewModelProvider =
     StateNotifierProvider<PointViewModelProvider, PointState>(
   (ref) => PointViewModelProvider(
-    ref.read,
     PointRepository(PointDatabase()),
   ),
 );
 
 class PointViewModelProvider extends StateNotifier<PointState> {
-  PointViewModelProvider(this._reader, this._pointRepository)
-      : super(const PointState()) {
+  PointViewModelProvider(this._pointRepository) : super(PointState()) {
     getPoints();
   }
 
-  final Reader _reader;
   final PointRepository _pointRepository;
 
-  Future<void> addPoint(String title) async {
+  Future<void> addPoint() async {
     final point = await _pointRepository.addPoint(const Point(
       point: 0,
       usedPoint: 0,
@@ -34,15 +32,20 @@ class PointViewModelProvider extends StateNotifier<PointState> {
 
   Future<void> getPoints() async {
     final points = await _pointRepository.getPoints();
-
+    if (points.isEmpty) {
+      await addPoint();
+    }
     state = state.copyWith(
       points: points,
     );
   }
 
-  Future<void> changeStatus(Point point) async {
+  Future<void> changeStatus(Point point, int changePoint, bool isPay) async {
+    if (isPay && point.point < changePoint) {
+      return;
+    }
     final newPoint = point.copyWith(
-      point: point.point + 10,
+      point: isPay ? point.point - changePoint : point.point + changePoint,
     );
 
     await _pointRepository.updatePoint(newPoint);

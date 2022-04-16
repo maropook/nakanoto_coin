@@ -1,39 +1,41 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nakanoto_coin/models/point.dart';
+import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 import 'package:nakanoto_coin/views/enter_price.dart';
 import 'package:nakanoto_coin/views/event_list.dart';
 import 'package:nakanoto_coin/views/shop_list.dart';
 
-class HappyPage extends StatefulWidget {
-  const HappyPage({Key? key}) : super(key: key);
-
-  @override
-  _HappyPageState createState() => _HappyPageState();
-}
-
-class _HappyPageState extends State {
+class HappyPage extends ConsumerWidget {
   String qrCode = '';
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final PointViewModelProvider pointViewModel =
+        ref.read(pointViewModelProvider.notifier);
+
+    final pointState = ref.watch(pointViewModelProvider);
+    bool getPoint = pointState.points.isNotEmpty;
+    Point? point = getPoint ? pointState.points.first : null;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ハピー'),
+        title: const Text('なかのと'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('images/logo.png', width: 150),
+            Image.asset('assets/images/logo.png', width: 150),
             const SizedBox(height: 20),
-            Image.asset('images/sdgs.png'),
+            Image.asset('assets/images/sdgs.png'),
             const SizedBox(height: 20),
-            const Text(
-              '25 SDGs POINT',
+            Text(
+              getPoint ? point!.point.toString() + 'ポイント' : '',
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
-            const Text(
-              '300 ハピー',
+            Text(
+              getPoint ? point!.usedPoint.toString() + '使ったポイント' : '',
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
@@ -42,7 +44,7 @@ class _HappyPageState extends State {
                 'QRコードをスキャンする',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              onPressed: () => scanQrCode(),
+              onPressed: () => scanQrCode(context),
             ),
             const SizedBox(height: 40),
             ElevatedButton(
@@ -50,15 +52,15 @@ class _HappyPageState extends State {
                 'SDGsイベント一覧',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              onPressed: () => showEvents(),
+              onPressed: () => showEvents(context),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
               child: const Text(
-                'ハピー協賛店マップ',
+                'なかのと協賛店マップ',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              onPressed: () => showMap(),
+              onPressed: () => showMap(context),
             ),
           ],
         ),
@@ -66,31 +68,28 @@ class _HappyPageState extends State {
     );
   }
 
-  Future scanQrCode() async {
+  Future scanQrCode(BuildContext context) async {
     final qrCode = await FlutterBarcodeScanner.scanBarcode(
       '#EB394B',
       'キャンセル',
       true,
       ScanMode.QR,
     );
-    if (!mounted) return;
 
-    setState(() {
-      enterPrice();
-    });
+    enterPrice(context);
   }
 
-  Future enterPrice() async {
+  Future enterPrice(BuildContext context) async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const EnterPrice()));
+        context, MaterialPageRoute(builder: (context) => EnterPrice()));
   }
 
-  Future showEvents() async {
+  Future showEvents(BuildContext context) async {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const EventList()));
   }
 
-  Future showMap() async {
+  Future showMap(BuildContext context) async {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ShopList()));
   }

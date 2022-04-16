@@ -7,14 +7,14 @@ class PayedView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ハピーをつかう'),
+        title: const Text('なかのとをつかう'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'ハピーをつかいました',
+              'なかのとをつかいました',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 40),

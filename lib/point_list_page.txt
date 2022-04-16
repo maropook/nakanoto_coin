@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:nakanoto_coin/models/point.dart';
+import 'package:nakanoto_coin/states/point_state.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 import 'package:nakanoto_coin/views/enter_price.dart';
 import 'package:nakanoto_coin/views/happy_page.dart';
-import 'package:nakanoto_coin/views/point_add_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PointListPage extends ConsumerWidget {
@@ -24,31 +24,12 @@ class PointListPage extends ConsumerWidget {
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return const HappyPage();
+                    return HappyPage();
                   },
                   fullscreenDialog: true,
                 ),
               );
             },
-          ),
-          // 2つ目のFAB
-          Container(
-            margin: const EdgeInsets.only(bottom: 16.0),
-            child: FloatingActionButton(
-              heroTag: "scan",
-              child: const Icon(Icons.edit),
-              backgroundColor: Theme.of(context).primaryColor,
-              onPressed: () async {
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return PointAddPage();
-                    },
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-            ),
           ),
           Container(
             margin: const EdgeInsets.only(bottom: 16.0),
@@ -81,15 +62,14 @@ class PointListPage extends ConsumerWidget {
     return ListView.builder(
       itemCount: pointState.points.length,
       itemBuilder: (BuildContext context, int index) {
-        final point = pointState.points[index];
-
-        return _pointItem(point, index, pointViewModel);
+        return _pointItem(pointState, index, pointViewModel);
       },
     );
   }
 
   Widget _pointItem(
-      Point point, int index, PointViewModelProvider pointViewModel) {
+      PointState pointState, int index, PointViewModelProvider pointViewModel) {
+    Point point = pointState.points[0];
     return Slidable(
       actionPane: const SlidableScrollActionPane(),
       secondaryActions: [
@@ -112,7 +92,7 @@ class PointListPage extends ConsumerWidget {
         ),
         value: point.point == 0 ? true : false,
         onChanged: (value) {
-          pointViewModel.changeStatus(point);
+          pointViewModel.changeStatus(pointState.points[0], 1, false);
         },
         controlAffinity: ListTileControlAffinity.leading,
       ),

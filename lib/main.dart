@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nakanoto_coin/service/material_color_service.dart';
-import 'package:nakanoto_coin/views/point_list_page.dart';
+import 'package:nakanoto_coin/views/happy_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: MaterialColorService.primaryColor,
       ),
-      home: PointListPage(),
+      home: HappyPage(),
     );
   }
 }

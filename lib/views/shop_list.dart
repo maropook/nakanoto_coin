@@ -7,7 +7,7 @@ class ShopList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ハピー協賛店マップ'),
+        title: const Text('なかのと協賛店マップ'),
       ),
       body: ListView(children: [
         _menuItem("おみせA", const Icon(Icons.store)),

@@ -2,16 +2,10 @@ import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 import 'package:nakanoto_coin/views/my_button.dart';
 import 'package:nakanoto_coin/views/payed_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-class EnterPrice extends StatefulWidget {
-  const EnterPrice({Key? key}) : super(key: key);
-
-  @override
-  _EnterPriceState createState() => _EnterPriceState();
-}
 
 final userInputProvider = StateProvider<String>((ref) {
   return '';
@@ -21,11 +15,12 @@ final answerProvider = StateProvider<String>((ref) {
   return '';
 });
 
-class _EnterPriceState extends State<EnterPrice> {
-  AudioCache audioCache = AudioCache(fixedPlayer: AudioPlayer());
+class EnterPrice extends ConsumerWidget {
+  EnterPrice({Key? key}) : super(key: key) {
+    audioCache = AudioCache(fixedPlayer: AudioPlayer());
+  }
 
-  var userInput = '';
-  var answer = '';
+  late AudioCache audioCache;
 
   final List<String> buttons = [
     '1',
@@ -43,12 +38,13 @@ class _EnterPriceState extends State<EnterPrice> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String userInput = ref.watch(userInputProvider);
     audioCache.loadAll(kSoundData);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ハピーをつかう"),
+        title: const Text("なかのとをつかう"),
       ), //AppBar
       backgroundColor: Colors.white38,
       body: Column(
@@ -71,9 +67,17 @@ class _EnterPriceState extends State<EnterPrice> {
                       child: const Text('つかう',
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold)),
-                      onPressed: () => pay(),
+                      onPressed: () => pay(context, ref),
                     ),
-                  )
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    child: ElevatedButton(
+                        child: const Text('ためる',
+                            style: TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.bold)),
+                        onPressed: () => save(context, ref)),
+                  ),
                 ]),
           ),
           Expanded(
@@ -87,10 +91,8 @@ class _EnterPriceState extends State<EnterPrice> {
                   if (index == 9) {
                     return MyButton(
                       onTap: () {
-                        setState(() {
-                          userInput = '';
-                          answer = '0';
-                        });
+                        ref.read(userInputProvider.state).state = '';
+                        ref.read(answerProvider.state).state = '0';
                       },
                       buttonText: buttons[index],
                       color: Colors.white,
@@ -102,10 +104,12 @@ class _EnterPriceState extends State<EnterPrice> {
                   else if (index == 11) {
                     return MyButton(
                       onTap: () {
-                        setState(() {
-                          userInput =
-                              userInput.substring(0, userInput.length - 1);
-                        });
+                        if (userInput.isEmpty) {
+                          return;
+                        }
+
+                        ref.read(userInputProvider.state).state =
+                            userInput.substring(0, userInput.length - 1);
                       },
                       buttonText: buttons[index],
                       color: Colors.white,
@@ -113,14 +117,13 @@ class _EnterPriceState extends State<EnterPrice> {
                     );
                   }
 
-                  //  other buttons
+                  //  other buttons 0~9
                   else {
                     return MyButton(
                       onTap: () {
-                        setState(() {
-                          userInput += buttons[index];
-                          debugPrint(userInput);
-                        });
+                        ref.read(userInputProvider.state).state +=
+                            buttons[index];
+                        debugPrint(userInput);
                       },
                       buttonText: buttons[index],
                       color: Colors.orange[50],
@@ -134,11 +137,26 @@ class _EnterPriceState extends State<EnterPrice> {
     );
   }
 
-  Future pay() async {
+  Future pay(BuildContext context, WidgetRef ref) async {
     var rand = math.Random();
     var n = rand.nextInt(kSoundData.length);
+    final pointViewModel = ref.watch(pointViewModelProvider);
+    String userInput = ref.watch(userInputProvider);
+    ref
+        .read(pointViewModelProvider.notifier)
+        .changeStatus(pointViewModel.points[0], int.parse(userInput), true);
     audioCache.play(kSoundData[n]);
 
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const PayedView()));
+  }
+
+  Future save(BuildContext context, WidgetRef ref) async {
+    final pointState = ref.watch(pointViewModelProvider);
+    String userInput = ref.watch(userInputProvider);
+    ref
+        .read(pointViewModelProvider.notifier)
+        .changeStatus(pointState.points[0], int.parse(userInput), false);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const PayedView()));
   }
