@@ -2,10 +2,10 @@ import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:nakanoto_coin/main.dart';
 import 'package:nakanoto_coin/service/styles.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 import 'package:nakanoto_coin/views/my_button.dart';
-import 'package:nakanoto_coin/views/payed_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userInputProvider = StateProvider<String>((ref) {
@@ -145,13 +145,12 @@ class EnterPrice extends ConsumerWidget {
     if (userInput.isEmpty) {
       return;
     }
-    ref
+    await ref
         .read(pointViewModelProvider.notifier)
         .changeStatus(pointViewModel.points[0], int.parse(userInput), true);
     audioCache.play(kSoundData[n]);
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const PayedView()));
+    ref.read(buttonIdProvider.state).state = 4;
   }
 
   Future save(BuildContext context, WidgetRef ref) async {
@@ -160,11 +159,10 @@ class EnterPrice extends ConsumerWidget {
     if (userInput.isEmpty) {
       return;
     }
-    ref
+    await ref
         .read(pointViewModelProvider.notifier)
         .changeStatus(pointState.points[0], int.parse(userInput), false);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const PayedView()));
+    ref.read(buttonIdProvider.state).state = 4;
   }
 }
 

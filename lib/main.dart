@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nakanoto_coin/service/styles.dart';
+import 'package:nakanoto_coin/views/enter_price.dart';
+import 'package:nakanoto_coin/views/event_list.dart';
 import 'package:nakanoto_coin/views/home_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nakanoto_coin/views/payed_page.dart';
+import 'package:nakanoto_coin/views/shop_list.dart';
 import 'package:path/path.dart';
 
 void main() {
@@ -13,11 +17,14 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+final buttonIdProvider = StateProvider((ref) => 0);
+
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var buttonId = ref.watch(buttonIdProvider);
     return MaterialApp(
       title: 'なかのと',
       theme: ThemeData(
@@ -31,7 +38,37 @@ class MyApp extends StatelessWidget {
           Styles.textTheme,
         ),
       ),
-      home: HomePage(),
+      home: Navigator(
+        pages: [
+          MaterialPage(
+            child: HomePage(),
+          ),
+          if (buttonId == 1)
+            MaterialPage(
+              child: EnterPrice(),
+            ),
+          if (buttonId == 2)
+            const MaterialPage(
+              child: EventList(),
+            ),
+          if (buttonId == 3)
+            const MaterialPage(
+              child: ShopList(),
+            ),
+          if (buttonId == 4)
+            const MaterialPage(
+              child: PayedView(),
+            ),
+        ],
+        onPopPage: (route, result) {
+          if (!route.didPop(result)) {
+            return false;
+          }
+          ref.read(buttonIdProvider.state).state = 0;
+          ref.read(userInputProvider.state).state = '';
+          return true;
+        },
+      ),
     );
   }
 }

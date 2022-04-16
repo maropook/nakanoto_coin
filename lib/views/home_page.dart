@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:nakanoto_coin/main.dart';
 import 'package:nakanoto_coin/models/point.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
-import 'package:nakanoto_coin/views/enter_price.dart';
-import 'package:nakanoto_coin/views/event_list.dart';
-import 'package:nakanoto_coin/views/shop_list.dart';
 
 class HomePage extends ConsumerWidget {
   String qrCode = '';
@@ -39,7 +36,7 @@ class HomePage extends ConsumerWidget {
                   style: TextStyle(fontSize: 40),
                 ),
                 Text(
-                  getPoint ? point!.usedPoint.toString() + '個  ' : '',
+                  getPoint ? point!.point.toString() + ' 個  ' : '',
                   style: const TextStyle(fontSize: 40),
                 ),
               ],
@@ -52,7 +49,7 @@ class HomePage extends ConsumerWidget {
                   style: TextStyle(fontSize: 40),
                 ),
                 Text(
-                  getPoint ? point!.usedPoint.toString() + '個  ' : '',
+                  getPoint ? point!.usedPoint.toString() + ' 個  ' : '',
                   style: const TextStyle(fontSize: 40),
                 ),
               ],
@@ -62,12 +59,12 @@ class HomePage extends ConsumerWidget {
                 InkWell(
                   child: Image.asset('assets/images/common/qrcode.png',
                       width: shortestSide / 2),
-                  onTap: () => scanQrCode(context),
+                  onTap: () => scanQrCode(ref),
                 ),
                 InkWell(
                   child: Image.asset('assets/images/common/use.png',
                       width: shortestSide / 2),
-                  onTap: () => enterPrice(context),
+                  onTap: () => enterPrice(ref),
                 ),
               ],
             ),
@@ -76,12 +73,12 @@ class HomePage extends ConsumerWidget {
                 InkWell(
                   child: Image.asset('assets/images/common/sponsor_store.png',
                       width: shortestSide / 2),
-                  onTap: () => showMap(context),
+                  onTap: () => showMap(ref),
                 ),
                 InkWell(
                   child: Image.asset('assets/images/common/event.png',
                       width: shortestSide / 2),
-                  onTap: () => showEvents(context),
+                  onTap: () => showEvents(ref),
                 ),
               ],
             ),
@@ -91,7 +88,7 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Future scanQrCode(BuildContext context) async {
+  Future scanQrCode(WidgetRef ref) async {
     final qrCode = await FlutterBarcodeScanner.scanBarcode(
       '#EB394B',
       'キャンセル',
@@ -99,21 +96,18 @@ class HomePage extends ConsumerWidget {
       ScanMode.QR,
     );
 
-    enterPrice(context);
+    enterPrice(ref);
   }
 
-  Future enterPrice(BuildContext context) async {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => EnterPrice()));
+  Future enterPrice(WidgetRef ref) async {
+    ref.read(buttonIdProvider.state).state = 1;
   }
 
-  Future showEvents(BuildContext context) async {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const EventList()));
+  Future showEvents(WidgetRef ref) async {
+    ref.read(buttonIdProvider.state).state = 2;
   }
 
-  Future showMap(BuildContext context) async {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const ShopList()));
+  Future showMap(WidgetRef ref) async {
+    ref.read(buttonIdProvider.state).state = 3;
   }
 }
