@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:nakanoto_coin/main.dart';
+import 'package:nakanoto_coin/nakanoto_coin.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

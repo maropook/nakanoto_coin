@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nakanoto_coin/main.dart';
 import 'package:nakanoto_coin/models/point.dart';
+import 'package:nakanoto_coin/nakanoto_coin.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 
 class HomePage extends ConsumerWidget {

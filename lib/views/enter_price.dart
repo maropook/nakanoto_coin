@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:nakanoto_coin/main.dart';
+import 'package:nakanoto_coin/nakanoto_coin.dart';
 import 'package:nakanoto_coin/service/styles.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 import 'package:nakanoto_coin/views/my_button.dart';
@@ -142,7 +143,9 @@ class EnterPrice extends ConsumerWidget {
     var n = rand.nextInt(kSoundData.length);
     final pointViewModel = ref.watch(pointViewModelProvider);
     String userInput = ref.watch(userInputProvider);
-    if (userInput.isEmpty) {
+
+    if (userInput.isEmpty ||
+        pointViewModel.points[0].point < int.parse(userInput)) {
       return;
     }
     await ref
