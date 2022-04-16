@@ -2,16 +2,13 @@ import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:nakanoto_coin/service/styles.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 import 'package:nakanoto_coin/views/my_button.dart';
 import 'package:nakanoto_coin/views/payed_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userInputProvider = StateProvider<String>((ref) {
-  return '';
-});
-
-final answerProvider = StateProvider<String>((ref) {
   return '';
 });
 
@@ -40,13 +37,14 @@ class EnterPrice extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String userInput = ref.watch(userInputProvider);
+
     audioCache.loadAll(kSoundData);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("なかのとをつかう"),
       ), //AppBar
-      backgroundColor: Colors.white38,
+      backgroundColor: Styles.myButtonColor,
       body: Column(
         children: <Widget>[
           Expanded(
@@ -57,27 +55,33 @@ class EnterPrice extends ConsumerWidget {
                     padding: const EdgeInsets.all(10),
                     alignment: Alignment.centerRight,
                     child: Text(
-                      userInput,
-                      style: const TextStyle(fontSize: 40, color: Colors.black),
+                      userInput.isNotEmpty ? userInput : '0',
+                      style: const TextStyle(fontSize: 40),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    child: ElevatedButton(
-                      child: const Text('つかう',
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                      onPressed: () => pay(context, ref),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    child: ElevatedButton(
-                        child: const Text('ためる',
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold)),
-                        onPressed: () => save(context, ref)),
-                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        child: ElevatedButton(
+                          child: const Text('つかう',
+                              style: TextStyle(
+                                  fontSize: 30, color: Styles.pageBackground)),
+                          onPressed: () => pay(context, ref),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        child: ElevatedButton(
+                            child: const Text('ためる',
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    color: Styles.pageBackground)),
+                            onPressed: () => save(context, ref)),
+                      ),
+                    ],
+                  )
                 ]),
           ),
           Expanded(
@@ -92,11 +96,9 @@ class EnterPrice extends ConsumerWidget {
                     return MyButton(
                       onTap: () {
                         ref.read(userInputProvider.state).state = '';
-                        ref.read(answerProvider.state).state = '0';
                       },
                       buttonText: buttons[index],
                       color: Colors.white,
-                      textColor: Colors.black,
                     );
                   }
 
@@ -113,7 +115,6 @@ class EnterPrice extends ConsumerWidget {
                       },
                       buttonText: buttons[index],
                       color: Colors.white,
-                      textColor: Colors.black,
                     );
                   }
 
@@ -126,8 +127,7 @@ class EnterPrice extends ConsumerWidget {
                         debugPrint(userInput);
                       },
                       buttonText: buttons[index],
-                      color: Colors.orange[50],
-                      textColor: Colors.black,
+                      color: Styles.primaryColor700,
                     );
                   }
                 }),
@@ -142,6 +142,9 @@ class EnterPrice extends ConsumerWidget {
     var n = rand.nextInt(kSoundData.length);
     final pointViewModel = ref.watch(pointViewModelProvider);
     String userInput = ref.watch(userInputProvider);
+    if (userInput.isEmpty) {
+      return;
+    }
     ref
         .read(pointViewModelProvider.notifier)
         .changeStatus(pointViewModel.points[0], int.parse(userInput), true);
@@ -154,6 +157,9 @@ class EnterPrice extends ConsumerWidget {
   Future save(BuildContext context, WidgetRef ref) async {
     final pointState = ref.watch(pointViewModelProvider);
     String userInput = ref.watch(userInputProvider);
+    if (userInput.isEmpty) {
+      return;
+    }
     ref
         .read(pointViewModelProvider.notifier)
         .changeStatus(pointState.points[0], int.parse(userInput), false);

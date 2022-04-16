@@ -1,5 +1,4 @@
 import 'package:nakanoto_coin/databases/point_database.dart';
-import 'package:nakanoto_coin/initial_state.dart';
 import 'package:nakanoto_coin/models/point.dart';
 import 'package:nakanoto_coin/repositories/point_repository.dart';
 import 'package:nakanoto_coin/states/point_state.dart';
@@ -45,8 +44,8 @@ class PointViewModelProvider extends StateNotifier<PointState> {
       return;
     }
     final newPoint = point.copyWith(
-      point: isPay ? point.point - changePoint : point.point + changePoint,
-    );
+        point: isPay ? point.point - changePoint : point.point + changePoint,
+        usedPoint: isPay ? point.usedPoint + changePoint : point.usedPoint);
 
     await _pointRepository.updatePoint(newPoint);
 

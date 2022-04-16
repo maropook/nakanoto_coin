@@ -34,7 +34,7 @@ class ShopList extends StatelessWidget {
               ),
               Text(
                 title,
-                style: const TextStyle(color: Colors.black, fontSize: 18.0),
+                style: const TextStyle(fontSize: 18.0),
               ),
             ],
           )),
