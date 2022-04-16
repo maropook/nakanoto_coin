@@ -34,7 +34,11 @@ abstract class Styles {
     iconTheme: const IconThemeData(
       color: Styles.appBarTitleColor,
     ),
-    titleTextStyle: GoogleFonts.mPlusRounded1c(fontSize: 20),
+    titleTextStyle: GoogleFonts.mPlusRounded1c(
+      textStyle: const TextStyle(
+        fontSize: 25,
+      ),
+    ),
   );
   static const TextTheme textTheme = TextTheme(
     headline1: TextStyle(

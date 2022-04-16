@@ -47,8 +47,12 @@ class NakanotoCoin extends ConsumerWidget {
               child: ShopList(),
             ),
           if (buttonId == 4)
-            const MaterialPage(
-              child: PayedView(),
+            MaterialPage(
+              child: PayedView(true),
+            ),
+          if (buttonId == 5)
+            MaterialPage(
+              child: PayedView(false),
             ),
         ],
         onPopPage: (route, result) {

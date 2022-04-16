@@ -6,11 +6,15 @@ import 'package:nakanoto_coin/main.dart';
 import 'package:nakanoto_coin/nakanoto_coin.dart';
 import 'package:nakanoto_coin/service/styles.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
-import 'package:nakanoto_coin/views/my_button.dart';
+import 'package:nakanoto_coin/components/my_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userInputProvider = StateProvider<String>((ref) {
   return '';
+});
+
+final usePointProvider = StateProvider<int>((ref) {
+  return 0;
 });
 
 class EnterPrice extends ConsumerWidget {
@@ -148,6 +152,7 @@ class EnterPrice extends ConsumerWidget {
         pointViewModel.points[0].point < int.parse(userInput)) {
       return;
     }
+    ref.read(usePointProvider.state).state = int.parse(userInput);
     await ref
         .read(pointViewModelProvider.notifier)
         .changeStatus(pointViewModel.points[0], int.parse(userInput), true);
@@ -162,10 +167,11 @@ class EnterPrice extends ConsumerWidget {
     if (userInput.isEmpty) {
       return;
     }
+    ref.read(usePointProvider.state).state = int.parse(userInput);
     await ref
         .read(pointViewModelProvider.notifier)
         .changeStatus(pointState.points[0], int.parse(userInput), false);
-    ref.read(buttonIdProvider.state).state = 4;
+    ref.read(buttonIdProvider.state).state = 5;
   }
 }
 

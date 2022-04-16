@@ -1,6 +1,5 @@
 import 'package:nakanoto_coin/databases/app_database.dart';
 import 'package:nakanoto_coin/models/point.dart';
-import 'package:nakanoto_coin/models/point.dart';
 import 'package:sqflite/sqflite.dart';
 
 class PointDatabase extends AppDatabase {

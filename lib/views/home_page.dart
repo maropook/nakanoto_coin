@@ -33,11 +33,17 @@ class HomePage extends ConsumerWidget {
               children: [
                 const Text(
                   '  つぼみ',
-                  style: TextStyle(fontSize: 40),
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   getPoint ? point!.point.toString() + ' 個  ' : '',
-                  style: const TextStyle(fontSize: 40),
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -46,11 +52,17 @@ class HomePage extends ConsumerWidget {
               children: [
                 const Text(
                   '    開花',
-                  style: TextStyle(fontSize: 40),
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   getPoint ? point!.usedPoint.toString() + ' 個  ' : '',
-                  style: const TextStyle(fontSize: 40),
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
