@@ -32,16 +32,16 @@ class HomePage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  '  つぼみ',
+                  '  ポイント',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  getPoint ? point!.point.toString() + ' 個  ' : '',
+                  getPoint ? point!.point.toString() + ' pt  ' : '',
                   style: const TextStyle(
-                    fontSize: 40,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -51,16 +51,16 @@ class HomePage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  '    開花',
+                  ' 使ったポイント',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  getPoint ? point!.usedPoint.toString() + ' 個  ' : '',
+                  getPoint ? point!.usedPoint.toString() + ' pt  ' : '',
                   style: const TextStyle(
-                    fontSize: 40,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

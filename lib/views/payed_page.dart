@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nakanoto_coin/models/point.dart';
-import 'package:nakanoto_coin/viewModels/point_view_model.dart';
 import 'package:nakanoto_coin/views/enter_price.dart';
 
 class PayedView extends ConsumerWidget {
@@ -23,8 +21,8 @@ class PayedView extends ConsumerWidget {
           children: [
             Text(
               isPay
-                  ? 'つぼみが\n' + point.toString() + '個\n開花しました'
-                  : 'つぼみが\n' + point.toString() + '個\n増えました',
+                  ? point.toString() + 'pt 使いました'
+                  : point.toString() + 'pt ゲットしました',
               style: const TextStyle(
                 fontSize: 37,
                 fontWeight: FontWeight.bold,

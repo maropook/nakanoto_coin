@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:nakanoto_coin/main.dart';
+import 'package:nakanoto_coin/models/point.dart';
 import 'package:nakanoto_coin/nakanoto_coin.dart';
 import 'package:nakanoto_coin/service/styles.dart';
 import 'package:nakanoto_coin/viewModels/point_view_model.dart';
@@ -42,7 +43,12 @@ class EnterPrice extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String userInput = ref.watch(userInputProvider);
+    final PointViewModelProvider pointViewModel =
+        ref.read(pointViewModelProvider.notifier);
 
+    final pointState = ref.watch(pointViewModelProvider);
+    bool getPoint = pointState.points.isNotEmpty;
+    Point? point = getPoint ? pointState.points.first : null;
     audioCache.loadAll(kSoundData);
 
     return Scaffold(
@@ -56,8 +62,17 @@ class EnterPrice extends ConsumerWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  Text(
+                    getPoint
+                        ? '現在のポイント ' + point!.point.toString() + ' pt  '
+                        : '',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(5),
                     alignment: Alignment.centerRight,
                     child: Text(
                       userInput.isNotEmpty ? userInput : '0',
